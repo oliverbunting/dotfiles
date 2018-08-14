@@ -7,7 +7,11 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+let g:SignatureMarkTextHLDynamic=1
+
+" ************************************************************************
 " Plug.vim managed plugins
+" ************************************************************************
 "
 call plug#begin('~/.vim/plugged')
 
@@ -17,13 +21,30 @@ Plug 'airblade/vim-gitgutter'
 Plug 'vim-scripts/SearchComplete' 
 
 " sign column marks in 
-Plug 'vim-scripts/ShowMarks'
+Plug 'kshenoy/vim-signature'
 
 " tab completion
 Plug 'ervandew/supertab'
 
+" syntax checking
 "
+Plug 'vim-syntastic/syntastic'
+
+
+" Filesystem tree + git markers
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Text alignment
+Plug 'junegunn/vim-easy-align'
+
+" Nix support
+Plug 'LnL7/vim-nix'
+
+" Color scheme
 "
+Plug 'sjl/badwolf'
+
 call plug#end()
 
 " **************************************************************************
@@ -35,5 +56,6 @@ set nu
 " mouse support
 set mouse=a
 
-
+" Use deus color scheme
+colors badwolf
 
