@@ -30,7 +30,6 @@ Plug 'ervandew/supertab'
 "
 Plug 'vim-syntastic/syntastic'
 
-
 " Filesystem tree + git markers
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -41,6 +40,9 @@ Plug 'junegunn/vim-easy-align'
 " Nix support
 Plug 'LnL7/vim-nix'
 
+" Haskell stuff
+Plug 'enomsg/vim-haskellConcealPlus'
+Plug 'neovimhaskell/haskell-vim'
 " Color scheme
 "
 Plug 'sjl/badwolf'
@@ -50,12 +52,16 @@ call plug#end()
 " **************************************************************************
 " General settings
 " **************************************************************************
+set updatetime=100
+
 " line numbers
 set nu
 
 " mouse support
 set mouse=a
 
-" Use deus color scheme
+" Choose a color scheme
 colors badwolf
 
+syntax on
+filetype plugin indent on
