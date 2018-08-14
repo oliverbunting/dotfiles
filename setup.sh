@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
-# Set dotfile repo location
-dotfiles=/opt/repos/dotfiles
+# Find dotfile repo location
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-ln -s $dotfiles/.vimrc ~/.vimrc
+ln -s $DIR/.vimrc ~/.vimrc
 
