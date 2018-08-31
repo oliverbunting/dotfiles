@@ -10,39 +10,70 @@ endif
 let g:SignatureMarkTextHLDynamic=1
 
 " ************************************************************************
-" Plug.vim managed plugins
+" Plug managed plugins
 " ************************************************************************
 "
 call plug#begin('~/.vim/plugged')
 
-Plug 'airblade/vim-gitgutter'
-
-" tab complete search
-Plug 'vim-scripts/SearchComplete' 
-
-" sign column marks in 
-Plug 'kshenoy/vim-signature'
-
-" tab completion
-Plug 'ervandew/supertab'
-
-" syntax checking
-"
-Plug 'vim-syntastic/syntastic'
-
-
-" Filesystem tree + git markers
+" File system tree
 Plug 'scrooloose/nerdtree'
+" Git marker + column marks
+Plug 'airblade/vim-gitgutter'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'kshenoy/vim-signature'
+" Tag bar
+Plug 'majutsushi/tagbar'
 
+" Language specific tab / space rules, shared between editors
+Plug 'editorconfig/editorconfig-vim'
+
+" Auto complete
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+" let g:deoplete#sources#syntax#min_keyword_length = 2
+
+" Snippet engine
+Plug 'Shougo/neosnippet.vim'
+
+" More snippets
+Plug 'Shougo/neosnippet-snippets'
+
+" Language server
+" Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+" -> which uses language servers to aid completion
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+let g:LanguageClient_serverCommands = {
+    \ 'haskell': ['hie-8.2', '--lsp', '-d', '-l', '/home/ollie/hie.log'],
+    \ }
+" Automatically start language servers.
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_settingsPath = '/home/ollie/.vim/plugged/LanguageClient-neovim/settings.json'
+let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
+
+
+" Fuzzy finder thing
+" Plug 'Shougo/denite.nvim'
+" fzf selection lists
+" Plug 'junegunn/fzf'
+" syntax checking
+" Plug 'vim-syntastic/syntastic'
 " Text alignment
-Plug 'junegunn/vim-easy-align'
+" Plug 'junegunn/vim-easy-align'
 
 " Nix support
 Plug 'LnL7/vim-nix'
 
-" Color scheme
-"
+" Colour scheme
 Plug 'sjl/badwolf'
 
 call plug#end()
@@ -50,12 +81,50 @@ call plug#end()
 " **************************************************************************
 " General settings
 " **************************************************************************
+set nocompatible
+" Required for operations modifying multiple buffers like rename.
+set hidden
 " line numbers
 set nu
-
+" Set the refresh rate
+set updatetime=100
+" Explicitly show commands as I type them
+set showcmd
 " mouse support
 set mouse=a
-
+" Gutter signs
+set signcolumn=yes
+" Spelling
+set spell
+set spell spelllang=en_gb
 " Use deus color scheme
 colors badwolf
 
+" Key shortcuts
+nmap <silent> <C-\> :NERDTreeToggle<CR>
+" Actually maps maps <C-/> !!!!
+nmap <silent> <C-_> :TagbarToggle<CR>
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" F8 highlights all words that match the one under current cursor
+nnoremap <F8> :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+
+" Snippets
+" map  <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+noremap <silent><expr><CR> pumvisible() ? deoplete#mappings#close_popup()."\<Plug>(neosnippet_expand_or_jump)" : "\<CR>"
+
+" " SuperTab like snippets behavior.
+" " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <expr><TAB>
+ \ pumvisible() ? "\<C-n>" :
+ \ neosnippet#expandable_or_jumpable() ?
+ \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+ \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
