@@ -67,13 +67,17 @@ let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
 " Plug 'junegunn/fzf'
 " syntax checking
 " Plug 'vim-syntastic/syntastic'
+
 " Text alignment
 " Plug 'junegunn/vim-easy-align'
 
 " Nix support
 Plug 'LnL7/vim-nix'
 
-" Colour scheme
+" Haskell stuff
+"Plug 'enomsg/vim-haskellConcealPlus'
+"Plug 'neovimhaskell/haskell-vim'
+
 Plug 'sjl/badwolf'
 
 call plug#end()
@@ -84,10 +88,9 @@ call plug#end()
 set nocompatible
 " Required for operations modifying multiple buffers like rename.
 set hidden
+set updatetime=100
 " line numbers
 set nu
-" Set the refresh rate
-set updatetime=100
 " Explicitly show commands as I type them
 set showcmd
 " mouse support
@@ -128,3 +131,6 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+syntax on
+filetype plugin indent on
